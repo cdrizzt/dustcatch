@@ -20,7 +20,10 @@ Widget::Widget(QWidget *parent) :
     connect(ui->serial_button,&QPushButton::clicked,this,&Widget::Serial_Open);
     connect(ui->save_button,&QPushButton::clicked,this,&Widget::on_cave_box_clicked);
     connect(ui->version_button,&QPushButton::clicked,this,&Widget::version_button_clicked);
+    connect(ui->fanopen_button,&QPushButton::clicked,this,&Widget::fanopen_button_clicked);
+    connect(ui->fanclose_button,&QPushButton::clicked,this,&Widget::fanclose_button_clicked);
 
+    connect(ui->debug_button,&QPushButton::clicked,this,&Widget::debug_button_clicked);
 
 }
 
@@ -212,6 +215,13 @@ void Widget::data_analysis(void)
 void Widget::version_button_clicked(bool checked)
 {
     uint8_t buff[6]={HEAD_1,HEAD_2,0x07,0x02,0x06,0x01};
+    uint8_t sum = 0;
+    for(int i=0;i<6;i++){
+        if(i==2){continue;}
+        sum += buff[i];
+    }
+
+    buff[2]=sum;
     SerialPort->write((char *)buff,6);
 }
 
@@ -238,4 +248,61 @@ void Widget::on_cave_box_clicked(bool checked)
         delete save_file;
         save_file = NULL;
     }
+}
+
+void Widget::fanopen_button_clicked(bool checked)
+{
+    uint8_t buff[8]={HEAD_1,HEAD_2,0x07,0x03,0x08,0x01,0x01,0x01};
+
+
+    buff[6] = ui->fanduty_edit->text().toInt();
+    buff[7] = ui->fantime_edit->text().toInt();
+
+    uint8_t sum = 0;
+    for(int i=0;i<8;i++){
+        if(i==2){continue;}
+        sum += buff[i];
+    }
+
+    buff[2]=sum;
+    SerialPort->write((char *)buff,8);
+}
+
+void Widget::fanclose_button_clicked(bool checked)
+{
+    uint8_t buff[8]={HEAD_1,HEAD_2,0x07,0x03,0x08,0x00,0x01,0x01};
+
+    uint8_t sum = 0;
+    for(int i=0;i<8;i++){
+        if(i==2){continue;}
+        sum += buff[i];
+    }
+
+    buff[2]=sum;
+    SerialPort->write((char *)buff,8);
+}
+
+void Widget::debug_button_clicked(bool checked)
+{
+    static bool flag =true;
+    if(flag==false){
+        ui->debug_button->setText("open debug");
+    }else{
+        ui->debug_button->setText("close debug");
+
+    }
+    uint8_t buff[6]={HEAD_1,HEAD_2,0x07,0x01,0x06,0x01};
+
+    buff[5]=flag;
+
+    uint8_t sum = 0;
+    for(int i=0;i<6;i++){
+        if(i==2){continue;}
+        sum += buff[i];
+    }
+
+    flag=!flag;
+
+    buff[2]=sum;
+    SerialPort->write((char *)buff,6);
 }

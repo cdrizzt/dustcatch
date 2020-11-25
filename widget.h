@@ -35,6 +35,9 @@ public:
      void data_analysis(void);
      void on_cave_box_clicked(bool checked);
      void version_button_clicked(bool checked);
+     void fanopen_button_clicked(bool checked);
+     void fanclose_button_clicked(bool checked);
+     void debug_button_clicked(bool checked);
 
 private:
     Ui::Widget *ui;
