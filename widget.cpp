@@ -177,16 +177,19 @@ void Widget::data_analysis(void)
             if(station.data_structre.type==0x01)
             {
 
-                float temperature = (int16_t)(station.data_structre.data[0]<<8|station.data_structre.data[1]);
-                float pressure    = (int16_t)(station.data_structre.data[2]<<8|station.data_structre.data[3]);
+                float temperature = (float)((int16_t)(station.data_structre.data[0]<<8|station.data_structre.data[1]));
+                float pressure    = (float)((int16_t)(station.data_structre.data[2]<<8|station.data_structre.data[3]));
                 temperature /=100;
-                pressure/=100;
 
                 QString str1 = QString("%1").arg(temperature);
                 ui->temperature->setText(str1);
 
                 QString str2 = QString("%1").arg(pressure);
                 ui->pressure->setText(str2);
+
+                int fan_open_cnt= (int)station.data_structre.buff[9];
+                QString str3 = QString("%1").arg(fan_open_cnt);
+                ui->fanopen_edit->setText(str3);
 
                 package_cnt++;
             }

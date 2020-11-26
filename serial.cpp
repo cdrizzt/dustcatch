@@ -124,23 +124,29 @@ QString serial::versiongst(uint8_t *buff)
         day[0]='0';
         day.append(cache);
     }
+
     version.append('_');
     version.append(year);
     version.append(month_num);
     version.append(day);
     version.append('_');
 
+    int year_int = atoi(year);
+    year_int -= 2016;
+
+    version.append(QString::number(year_int,10));
+    version.append(month_num);
+    version.append(day);
+
     QByteArray str_buf_time((const char *)&buff[17]);
     for(int i=0;i<str_buf_time.size();i++){
         if(str_buf_time[i]==':'){
-            str_buf_time[i]=str_buf_time[i+1];
-            str_buf_time[i+1]=str_buf_time[i+2];
-            str_buf_time[i+2]='\0';
+            str_buf_time[i]='\0';
             break;
         }
     }
     version.append(str_buf_time);
-    version.append('_');
+    version.append("(320AL)");
 
     return version;
 
