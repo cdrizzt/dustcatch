@@ -22,13 +22,25 @@ Widget::Widget(QWidget *parent) :
     connect(ui->version_button,&QPushButton::clicked,this,&Widget::version_button_clicked);
     connect(ui->fanopen_button,&QPushButton::clicked,this,&Widget::fanopen_button_clicked);
     connect(ui->fanclose_button,&QPushButton::clicked,this,&Widget::fanclose_button_clicked);
-
     connect(ui->debug_button,&QPushButton::clicked,this,&Widget::debug_button_clicked);
 
 }
 
 Widget::~Widget()
 {
+    if(begin==true){    //如果打开了串口 先发送关闭调试
+        uint8_t buff[6]={HEAD_1,HEAD_2,0x07,0x01,0x06,0x01};
+
+        buff[5]=0;
+
+        uint8_t sum = 0;
+        for(int i=0;i<6;i++){
+            if(i==2){continue;}
+            sum += buff[i];
+        }
+        buff[2]=sum;
+        SerialPort->write((char *)buff,6);
+    }
     delete ui;
 }
 
@@ -191,6 +203,17 @@ void Widget::data_analysis(void)
                 QString str3 = QString("%1").arg(fan_open_cnt);
                 ui->fanopen_edit->setText(str3);
 
+                //存储文件
+                if(save_flag==true)
+                {
+                    save_file->write(str1.toStdString().c_str());
+                    save_file->write(",");
+                    save_file->write(str2.toStdString().c_str());
+                    save_file->write(",");
+                    save_file->write(str3.toStdString().c_str());
+                    save_file->write("\r\n");
+                }
+
                 package_cnt++;
             }
             else if(station.data_structre.type==0x02)   //程序版本号
@@ -202,13 +225,6 @@ void Widget::data_analysis(void)
             QString str_1;
             str_1 = QString::number(package_cnt);
             ui->label_9->setText(str_1);
-
-            //存储文件
-            if(save_flag==true)
-            {
-
-            }
-
         }
 
     }
@@ -218,6 +234,7 @@ void Widget::data_analysis(void)
 void Widget::version_button_clicked(bool checked)
 {
     uint8_t buff[6]={HEAD_1,HEAD_2,0x07,0x02,0x06,0x01};
+    if(begin==false){return;}
     uint8_t sum = 0;
     for(int i=0;i<6;i++){
         if(i==2){continue;}
@@ -230,8 +247,7 @@ void Widget::version_button_clicked(bool checked)
 
 void Widget::on_cave_box_clicked(bool checked)
 {
-    save_flag = checked;
-    if(save_flag==true)
+    if(save_flag==false)
     {
         QString path = QFileDialog::getExistingDirectory(this,"选择目录","D:\\qtpractice",\
                                                              QFileDialog::ShowDirsOnly);
@@ -244,19 +260,40 @@ void Widget::on_cave_box_clicked(bool checked)
         save_file->setFileName(path+filename);
 
         save_file->open(QIODevice::WriteOnly|QIODevice::Append);
+        if(ui->version_edit->text()!=NULL){
+            save_file->write(ui->version_edit->text().toStdString().c_str());
+            save_file->write("\r\n");
+        }else{
+            save_file->write("start\r\n");
+        }
+
+        if(ui->dustpack_num_edit->text()!=NULL&&ui->dust_num_edit!=NULL){
+            save_file->write("package num:");
+            save_file->write(ui->dustpack_num_edit->text().toStdString().c_str());
+            save_file->write("      ");
+            save_file->write("dust num:");
+            save_file->write(ui->dust_num_edit->text().toStdString().c_str());
+            save_file->write("\r\n");
+        }
+
+        save_file->write("temperature,pressure,dust_cnt\r\n");
+
+        ui->save_button->setText("stop_save");
     }
     else
     {
         save_file->close();
         delete save_file;
         save_file = NULL;
+        ui->save_button->setText("save");
     }
+    save_flag=!save_flag;
 }
 
 void Widget::fanopen_button_clicked(bool checked)
 {
     uint8_t buff[8]={HEAD_1,HEAD_2,0x07,0x03,0x08,0x01,0x01,0x01};
-
+    if(begin==false){return;}
 
     buff[6] = ui->fanduty_edit->text().toInt();
     buff[7] = ui->fantime_edit->text().toInt();
@@ -274,7 +311,7 @@ void Widget::fanopen_button_clicked(bool checked)
 void Widget::fanclose_button_clicked(bool checked)
 {
     uint8_t buff[8]={HEAD_1,HEAD_2,0x07,0x03,0x08,0x00,0x01,0x01};
-
+    if(begin==false){return;}
     uint8_t sum = 0;
     for(int i=0;i<8;i++){
         if(i==2){continue;}
@@ -288,6 +325,7 @@ void Widget::fanclose_button_clicked(bool checked)
 void Widget::debug_button_clicked(bool checked)
 {
     static bool flag =true;
+    if(begin==false){return;}
     if(flag==false){
         ui->debug_button->setText("open debug");
     }else{

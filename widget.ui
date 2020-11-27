@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>623</width>
-    <height>423</height>
+    <width>599</width>
+    <height>394</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,47 +29,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>110</y>
-      <width>171</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Time</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>package</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>50</y>
+      <y>100</y>
       <width>177</width>
       <height>76</height>
      </rect>
@@ -103,13 +63,49 @@
        </property>
       </widget>
      </item>
+     <item row="2" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Time</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="2" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>package</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
     </layout>
    </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>140</y>
+      <y>190</y>
       <width>221</width>
       <height>22</height>
      </rect>
@@ -135,7 +131,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>180</y>
+      <y>230</y>
       <width>181</width>
       <height>52</height>
      </rect>
@@ -179,25 +175,53 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>20</y>
-      <width>181</width>
-      <height>22</height>
+      <y>30</y>
+      <width>202</width>
+      <height>52</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
-      <widget class="QLabel" name="label_10">
-       <property name="text">
-        <string>集尘次数:</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>集尘袋编号:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="dustpack_num_edit"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>垃圾量</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="dust_num_edit"/>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="QLineEdit" name="fanopen_edit"/>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>集尘次数:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="fanopen_edit"/>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
@@ -206,7 +230,7 @@
    <property name="geometry">
     <rect>
      <x>320</x>
-     <y>160</y>
+     <y>210</y>
      <width>91</width>
      <height>23</height>
     </rect>
@@ -219,7 +243,7 @@
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>30</y>
+     <y>50</y>
      <width>160</width>
      <height>53</height>
     </rect>
@@ -252,7 +276,7 @@
    <property name="geometry">
     <rect>
      <x>320</x>
-     <y>200</y>
+     <y>250</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -265,7 +289,7 @@
    <property name="geometry">
     <rect>
      <x>320</x>
-     <y>230</y>
+     <y>280</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -278,7 +302,7 @@
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>90</y>
+     <y>110</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -293,6 +317,10 @@
   <zorder>fanopen_button</zorder>
   <zorder>fanclose_button</zorder>
   <zorder>debug_button</zorder>
+  <zorder>dustpack_num_edit</zorder>
+  <zorder>label_11</zorder>
+  <zorder>label_12</zorder>
+  <zorder>dust_num_edit</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
